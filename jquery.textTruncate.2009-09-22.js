@@ -150,7 +150,7 @@
 				$this.html( text + options.tail );
 
 			} else {
-				$this.html( text );
+				$this.text( text );
 			}
 
 			this.style.visibility = "visible";

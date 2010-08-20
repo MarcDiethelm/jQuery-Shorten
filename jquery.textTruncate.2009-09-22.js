@@ -1,4 +1,12 @@
-{ // a dummy block, so I can collapse all the meta stuff in the editor
+{
+/*
+ * Shorten, a jQuery plugin to automatically shorten text to fit in a block or a pre-set width and configure how the text ends.
+ * Copyright (C) 2009-2010  Marc Diethelm
+ * License: (GPL 3, http://www.gnu.org/licenses/gpl-3.0.txt) see license.txt
+ */
+
+
+// a dummy block, so I can collapse all the meta stuff in the editor
 /****************************************************************************
  * jQuery 1.3.x plugin to shorten styled text to fit in a block, appending
  * an ellipsis ("...", &hellip;, Unicode: 2026) or other text.
@@ -56,8 +64,7 @@
  * initially flash at full width.
  *
  *
- * Created by M. David Green (www.mdavidgreen.com) in 2009. Free to use for
- * personal or commercial purposes under MIT (X11) license with no warranty
+ * Based on a creation by M. David Green (www.mdavidgreen.com) in 2009.
  *
  * Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
  *

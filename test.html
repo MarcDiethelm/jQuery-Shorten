@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>textTruncate - A jQuery Plugin for Truncating Styled Text</title>
+		<style type="text/css" media="Screen">
+			body { font-family: sans-serif;}
+			.ruler { padding: 5px 0; border-bottom:1px dashed #000; background-color:#ffc; }
+
+			.testText { width:500px; margin:47px 0 0; border: 1px dotted #000; }
+			.testText p { white-space:nowrap; overflow:hidden; margin:0; }
+			.testText p.styled {font-family:impact;font-size:1.75em;font-style:italic;}
+			.testText p.tiny {font-family:tahoma;font-size:0.75em;font-weight:bold;}
+
+			.testText p { visibility: hidden; }
+		</style>
+	</head>
+
+	<body>
+		<h1>jQuery textTruncate tests and demo</h1>
+		<p>
+		The parent's width is set to 500px in CSS and has a dotted border.
+		</p>
+
+		<div class="testText test1">
+			<div class="ruler">500 px, each line truncated individually</div>
+			<p class="unstyled">This is a &lt;p&gt; element that could be any length, but has to fit a given pixel width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit a given pixel width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit a given pixel width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+		</div>
+
+		<div class="testText test2">
+			<div class="ruler">500 px, selector matches multiple</div>
+			<p class="unstyled">This is a  &lt;p&gt; element that could be any length, but has to fit a given pixel width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit a given pixel width.</p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<p>
+			If the elements above are grey, chainability is preserved.
+		</p>
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+		<!--<script type="text/javascript" src="../../jquery-1.3.2.js"></script>-->
+		<script type="text/javascript" src="jquery.textTruncate.2009-09-22.js"></script>
+		<script type="text/javascript">
+			//firebug stuff:
+			//var c = console;
+
+			$(function() {
+				var newWidth = 500; // the maximum goal width, in pixels
+				$("p.unstyled", ".test1").textTruncate(); // Zero configuration, default ellipsis
+				$("p.styled", ".test1").textTruncate(newWidth, '&nbsp;&nbsp;<a href="#">...more</a>');
+				$("p.tiny", ".test1").textTruncate(newWidth, " &ndash; really long margin text");
+
+				$("p", ".test2").textTruncate(newWidth).css("background-color", "#eeeeee"); // added css method to test chainability
+			});
+		</script>
+
+	</body>
+
+</html>

@@ -220,7 +220,7 @@
 			//ctx.fillStyle = "red"; ctx.fillRect (0, 0, 500, 40);
 			//ctx.fillStyle = "black"; ctx.fillText(text, 0, 20);
 
-		return ctx.measureText(text).width;
+		return ctx.measureText(text).width; // crucial, fast but called too often
 	};
 
 	$.fn.textTruncate.measureText_initTable = function() {
@@ -233,12 +233,12 @@
 		return $td;
 	};
 
-	// measurement using temp table
+	// measurement using table
 	$.fn.textTruncate.measureText_table = function measureText_table( text, $td )
 	{
 		$td.text( text );
 
-		return $td.width();
+		return $td.width(); // crucial but expensive
 	};
 
 

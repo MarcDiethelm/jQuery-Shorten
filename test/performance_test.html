@@ -1,0 +1,298 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Shorten - A jQuery Plugin for Truncating Styled Text</title>
+		<style type="text/css" media="Screen">
+			body { font-family: sans-serif;}
+			.ruler { padding: 5px 0; border-bottom:1px dashed #000; background-color:#ffc; }
+
+			.testText { width:500px; margin:47px 0 0; border: 1px dotted #000; }
+			.testText p { white-space:nowrap; margin:0; }
+			.testText .styled {font-family:impact;font-size:1.75em;font-style:italic;}
+			.testText .tiny {font-family:tahoma;font-size:0.70em;font-weight:bold;}
+
+			.testText p { overflow:hidden; } /* Recommended: if not hiding the text before it's shortened. */
+			.testText p { visibility: hidden; } /* Optional: hide the element before shortening its content. */
+
+			/* demo visual stuff */
+			._100px { width: 99px; border-left: 1px dotted #888; float: right; clear: both;  background-color: #fafafa; color: #ccc; }
+		</style>
+	</head>
+
+	<body>
+		<h1>jQuery Shorten tests and demo</h1>
+		<p>
+		The parent has a dotted border and its width is set to 500px in CSS.
+		</p>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<div class="testText">
+			<div class="ruler">each line truncated individually, fit parent</div>
+			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+			<p class="tiny"><!-- markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+		<script>!window.jQuery && document.write('<script type="text\/javascript" src="..\/jquery\/jquery-1.4.2.js"><\/script>')</script>
+		<script type="text/javascript" src="../jquery.textTruncate.2009-09-22.js"></script>
+		<script type="text/javascript">
+
+			$(function() {
+				console.profile("jQuery Shorten")
+				$("p.unstyled").textTruncate(); // Zero configuration, default ellipsis
+				$("p.styled").textTruncate({tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
+				$("p.tiny").textTruncate({tail: " &ndash; really long substitution text"});
+				console.profileEnd();
+			});
+		</script>
+
+	</body>
+
+</html>

@@ -3,22 +3,26 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>textTruncate - A jQuery Plugin for Truncating Styled Text</title>
+		<title>Shorten - A jQuery Plugin for Truncating Styled Text</title>
 		<style type="text/css" media="Screen">
 			body { font-family: sans-serif;}
 			.ruler { padding: 5px 0; border-bottom:1px dashed #000; background-color:#ffc; }
 
 			.testText { width:500px; margin:47px 0 0; border: 1px dotted #000; }
-			.testText p { white-space:nowrap; overflow:hidden; margin:0; }
-			.testText p.styled {font-family:impact;font-size:1.75em;font-style:italic;}
-			.testText p.tiny {font-family:tahoma;font-size:0.70em;font-weight:bold;}
+			.testText p { white-space:nowrap; margin:0; }
+			.testText .styled {font-family:impact;font-size:1.75em;font-style:italic;}
+			.testText .tiny {font-family:tahoma;font-size:0.70em;font-weight:bold;}
 
+			.testText p { overflow:hidden; } /* Recommended: if not hiding the text before it's shortened. */
 			.testText p { visibility: hidden; } /* Optional: hide the element before shortening its content. */
+
+			/* demo visual stuff */
+			._100px { width: 99px; border-left: 1px dotted #888; float: right; clear: both;  background-color: #fafafa; color: #ccc; }
 		</style>
 	</head>
 
 	<body>
-		<h1>jQuery textTruncate tests and demo</h1>
+		<h1>jQuery Shorten tests and demo</h1>
 		<p>
 		The parent has a dotted border and its width is set to 500px in CSS.
 		</p>
@@ -42,8 +46,11 @@
 			Test: If the elements above are grey, chainability is preserved.
 		</p>
 
-		<div class="testText test3">
+		<div class="testText test3" style="position: relative;">
 			<div class="ruler">mixed selectors, fit 400px</div>
+			<div class="unstyled _100px">&nbsp;</div>
+			<div class="styled _100px">&nbsp;400px</div>
+			<div class="tiny _100px">&nbsp;</div>
 			<p class="unstyled">This is a  &lt;p&gt; element that could be any length, but has to fit a given pixel width.</p>
 			<p class="styled">This is a bit of styled text that could be any length, but has to fit a given pixel width.</p>
 			<p class="tiny">Too short, no need to truncate.</p>
@@ -64,8 +71,8 @@
 				$("p", ".test2").textTruncate(newWidth).css("background-color", "#eeeeee"); // added css method to test chainability
 
 				newWidth = 400;
-				$(".unstyled, .tiny", ".test3").textTruncate({width: newWidth});
-				$(".styled", ".test3").textTruncate({width: newWidth, tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
+				$("p.unstyled, p.tiny", ".test3").textTruncate({width: newWidth});
+				$("p.styled", ".test3").textTruncate({width: newWidth, tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
 			});
 		</script>
 

@@ -74,11 +74,13 @@
 
 (function ($) {
 
+	//var $c = console;
+
 	$.fn.textTruncate = function() {
 
-		var userOptions = {};
-		var args = arguments; // for better minification
-		var func = args.callee // dito; and much shorter than $.fn.textTruncate
+		var userOptions = {},
+			args = arguments, // for better minification
+			func = args.callee // dito; and much shorter than $.fn.textTruncate
 
 		if ( args.length ) {
 
@@ -122,37 +124,50 @@
 				return true;
 			}
 
-			var width = options.width || $this.parent().width();
 
-			var text = $this.text();
-			var textlength = text.length;
-			var css = "padding:0; margin:0; border:none; font:inherit;";
-			var $table = $('<table style="'+ css +'width:auto;zoom:1;position:absolute;"><tr style="'+ css +'"><td style="'+ css +'white-space:nowrap;">' + options.tail + '</td></tr></table>');
-			var $td = $("td", $table);
-			$this.html( $table );
+			var targetWidth = options.width || $this.parent().width(),
+				text = $this.text(),
+				textlength = text.length,
+				measureContext, // canvas context or table cell
+				measureText, // function that measures text width
+				tailText = $("<span/>").html(options.tail).text(), // convert html to text
+				tailWidth;
 
-			var tailwidth = $td.width();
-			var targetWidth = width - tailwidth;
 
-			$td.text( text );
-
-			if ($td.width() > width) {
-				if ( options.tooltip ) {
-					$this.attr("title", text);
-				}
-
-				while ($td.width() >= targetWidth ) {
-					textlength--;
-					$td.html($td.html().substring(0, textlength)); // .html(val) is faster than .text(val) and we already used .text(val) to strip/escape html
-				}
-
-				text = $.trim( $td.html() );
-				$this.html( text + options.tail );
+			// decide on a method for measuring text width
+			if ( func._supportsCanvas ) {
+				//$c.log("canvas");
+				measureContext = func.measureText_initCanvas.call( this );
+				measureText = func.measureText_canvas;
 
 			} else {
-				$this.text( text );
+				//$c.log("table")
+				measureContext = func.measureText_initTable.call( this );
+				measureText = func.measureText_table;
 			}
 
+			if ( measureText.call( this, text, measureContext ) < targetWidth ) {
+				$this.text( text );
+				this.style.visibility = "visible";
+				return true;
+			}
+
+			tailWidth = measureText.call( this, tailText, measureContext ); // convert html to text and measure it
+			targetWidth = targetWidth - tailWidth;
+
+				//$c.log("tailText: "+ tailText);
+				//$c.log("tailWidth: "+ tailWidth);
+				//$c.log("targetWidth: "+ targetWidth);
+				//$c.log(measureText.call( this, text, measureContext ) + "px: "+ text);
+
+			do {
+				textlength--;
+				text = text.substring(0, textlength);
+				//$c.log(measureText.call( this, text, measureContext ) + "px: "+ text);
+
+			} while ( measureText.call( this, text, measureContext ) >= targetWidth );
+
+			$this.html( $.trim( $("<span/>").text(text).html() ) + options.tail );
 			this.style.visibility = "visible";
 
 			return true;
@@ -163,6 +178,7 @@
 	};
 
 
+
 	var css = document.documentElement.style;
 	var _native = false;
 
@@ -170,9 +186,60 @@
 		_native = "textOverflow";
 	} else if ( "OTextOverflow" in css ) {
 		_native = "OTextOverflow";
+	} else {
+		// test for canvas support
+		var canvas = document.createElement("canvas"),
+			ctx = canvas.getContext("2d");
+
+		$.fn.textTruncate._supportsCanvas =  (ctx ? true : false);
+		delete canvas;
 	}
 
 	$.fn.textTruncate._native = _native;
+
+
+
+	$.fn.textTruncate.measureText_initCanvas = function initCanvas()
+	{
+		var $this = $(this);
+		var canvas = document.createElement("canvas");
+			//scanvas.setAttribute("width", 500); canvas.setAttribute("height", 40);
+		ctx = canvas.getContext("2d");
+		$this.html( canvas );
+
+		/* the rounding is experimental. it fixes a problem with a font size specified as 0.7em which resulted in a computed size of 11.2px.
+		  without rounding the measured font was too small. even with rounding the result differs slightly from the table method's results. */
+		ctx.font = Math.ceil(parseFloat($this.css("font-size"))) +"px "+ $this.css("font-family") +" "+ $this.css("font-weight") +" "+ $this.css("font-style");
+
+		return ctx;
+	}
+
+	// measurement using canvas
+	$.fn.textTruncate.measureText_canvas = function measureText_canvas( text, ctx )
+	{
+			//ctx.fillStyle = "red"; ctx.fillRect (0, 0, 500, 40);
+			//ctx.fillStyle = "black"; ctx.fillText(text, 0, 20);
+
+		return ctx.measureText(text).width;
+	};
+
+	$.fn.textTruncate.measureText_initTable = function() {
+		var css = "padding:0; margin:0; border:none; font:inherit;";
+		var $table = $('<table style="'+ css +'width:auto;zoom:1;position:absolute;"><tr style="'+ css +'"><td style="'+ css +'white-space:nowrap;"></td></tr></table>');
+		$td = $("td", $table);
+
+		$(this).html( $table );
+
+		return $td;
+	};
+
+	// measurement using temp table
+	$.fn.textTruncate.measureText_table = function measureText_table( text, $td )
+	{
+		$td.text( text );
+
+		return $td.width();
+	};
 
 
 	$.fn.textTruncate.defaults = {

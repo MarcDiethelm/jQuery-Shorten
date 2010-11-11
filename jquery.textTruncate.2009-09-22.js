@@ -1,4 +1,5 @@
-{
+{ // a dummy block, so I can collapse all the meta stuff in the editor
+
 /*
  * Shorten, a jQuery plugin to automatically shorten text to fit in a block or a pre-set width and configure how the text ends.
  * Copyright (C) 2009-2010  Marc Diethelm
@@ -6,7 +7,6 @@
  */
 
 
-// a dummy block, so I can collapse all the meta stuff in the editor
 /****************************************************************************
  * jQuery 1.3.x plugin to shorten styled text to fit in a block, appending
  * an ellipsis ("...", &hellip;, Unicode: 2026) or other text.
@@ -111,18 +111,19 @@
 			$this.data("options-truncate", options);
 
 			/**
-			 * If browser implements text-overflow:ellipsis in CSS and tail is "...", use it!
-			 * FIX ME: Could also sensibly be:  &hellip;, Unicode: 2026
+			 * If browser implements text-overflow:ellipsis in CSS and tail is &hellip;/Unicode 8230/(…), use it!
 			 **/
-			if ( options.tail == "..." && func._native ) {
+			if ( func._native ) {
 
-				this.style[func._native] = "ellipsis";
-				/*var css_obj = {}
-				css_obj[func._native] = "ellipsis";
-				$this.css(css_obj);*/
-				$this.css("visibility","visible");
+				var rendered_tail = $("<span>"+options.tail+"</span>").text(); // render tail to find out if it's the ellipsis character.
 
-				return true;
+				if ( rendered_tail.length == 1 && rendered_tail.charCodeAt(0) == 8230 ) {
+
+					this.style[func._native] = "ellipsis";
+					this.style.visibility = "visible";
+
+					return true;
+				}
 			}
 
 

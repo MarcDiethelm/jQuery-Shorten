@@ -112,6 +112,7 @@
 
 			/**
 			 * If browser implements text-overflow:ellipsis in CSS and tail is "...", use it!
+			 * FIX ME: Could also sensibly be:  &hellip;, Unicode: 2026
 			 **/
 			if ( options.tail == "..." && func._native ) {
 
@@ -127,7 +128,7 @@
 
 			var targetWidth = options.width || $this.parent().width(),
 				text = $this.text(),
-				textlength = text.length,
+				numChars = text.length,
 				measureContext, // canvas context or table cell
 				measureText, // function that measures text width
 				tailText = $("<span/>").html(options.tail).text(), // convert html to text
@@ -146,7 +147,9 @@
 				measureText = func.measureText_table;
 			}
 
-			if ( measureText.call( this, text, measureContext ) < targetWidth ) {
+			var origLength = measureText.call( this, text, measureContext );
+
+			if ( origLength < targetWidth ) {
 				$this.text( text );
 				this.style.visibility = "visible";
 				return true;
@@ -155,21 +158,44 @@
 			tailWidth = measureText.call( this, tailText, measureContext ); // convert html to text and measure it
 			targetWidth = targetWidth - tailWidth;
 
-				//$c.log("tailText: "+ tailText);
-				//$c.log("tailWidth: "+ tailWidth);
-				//$c.log("targetWidth: "+ targetWidth);
-				//$c.log(measureText.call( this, text, measureContext ) + "px: "+ text);
+				//$c.log(text +" + "+ tailText);
 
+			/**
+			 * Before we start removing character one by one, let's try to be more intelligent about this:
+			 * If the original string is longer than targetWidth by at least xy percent, then shorten it by yz percent (and re-measure for safety),
+			 * if we're still too long use it, else skip this step. This saves a lot of time for long strings.
+			 */
+			var safeGuess = targetWidth * 1.15; // add 15% to targetWidth for safety before making the cut.
+
+			if ( origLength - safeGuess > 0 ) { // if it's safe to cut, do it.
+
+				var cut_ratio = safeGuess / origLength,
+					num_guessText_chars = Math.ceil( numChars * cut_ratio ),
+					// looking good: shorten and measure
+					guessText = text.substring(0, num_guessText_chars),
+					guessTextLength = measureText.call( this, guessText, measureContext );
+
+					//$c.info("safe guess: remove " + (numChars - num_guessText_chars) +" chars");
+
+				if ( guessTextLength > targetWidth ) { // make sure it's not too short!
+					text = guessText;
+					numChars = text.length;
+				}
+			}
+
+				//var count = 0;
+			// this simply removes characters one by one until the text is shorter than targetWidth
 			do {
-				textlength--;
-				text = text.substring(0, textlength);
-				//$c.log(measureText.call( this, text, measureContext ) + "px: "+ text);
+				numChars--;
+				text = text.substring(0, numChars);
+					//count++;
 
 			} while ( measureText.call( this, text, measureContext ) >= targetWidth );
 
 			$this.html( $.trim( $("<span/>").text(text).html() ) + options.tail );
 			this.style.visibility = "visible";
-
+				//$c.info(count + " normal truncating cycles...")
+				//$c.log("----------------------------------------------------------------------");
 			return true;
 		});
 

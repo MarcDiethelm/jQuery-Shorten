@@ -281,14 +281,14 @@
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
 		<script>!window.jQuery && document.write('<script type="text\/javascript" src="..\/jquery\/jquery-1.4.2.js"><\/script>')</script>
-		<script type="text/javascript" src="../jquery.textTruncate.2009-09-22.js"></script>
+		<script type="text/javascript" src="../jquery.shorten.2009-09-22.js"></script>
 		<script type="text/javascript">
 
 			$(function() {
 				console.profile("jQuery Shorten")
-				$("p.unstyled").textTruncate(); // Zero configuration, default ellipsis
-				$("p.styled").textTruncate({tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
-				$("p.tiny").textTruncate({tail: " &ndash; really long substitution text"});
+				$("p.unstyled").shorten(); // Zero configuration, default ellipsis
+				$("p.styled").shorten({tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
+				$("p.tiny").shorten({tail: " &ndash; really long substitution text"});
 				console.profileEnd();
 			});
 		</script>

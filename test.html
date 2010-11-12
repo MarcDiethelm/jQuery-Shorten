@@ -58,21 +58,21 @@
 
 		<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>-->
 		<script>!window.jQuery && document.write('<script type="text\/javascript" src="jquery\/jquery-1.4.2.min.js"><\/script>')</script>
-		<script type="text/javascript" src="jquery.textTruncate.2009-09-22.js"></script>
+		<script type="text/javascript" src="jquery.shorten.2009-09-22.js"></script>
 		<script type="text/javascript">
 
 
 			$(function() {
 				var newWidth = 500; // the maximum target width, in pixels
-				$("p.unstyled", ".test1").textTruncate(); // Zero configuration, default ellipsis
-				$("p.styled", ".test1").textTruncate({tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
-				$("p.tiny", ".test1").textTruncate({tail: " &ndash; really long substitution text"});
+				$("p.unstyled", ".test1").shorten(); // Zero configuration, default ellipsis
+				$("p.styled", ".test1").shorten({tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
+				$("p.tiny", ".test1").shorten({tail: " &ndash; really long substitution text"});
 
-				$("p", ".test2").textTruncate(newWidth).css("background-color", "#eeeeee"); // added css method to test chainability
+				$("p", ".test2").shorten(newWidth).css("background-color", "#eeeeee"); // added css method to test chainability
 
 				newWidth = 400;
-				$("p.unstyled, p.tiny", ".test3").textTruncate({width: newWidth});
-				$("p.styled", ".test3").textTruncate({width: newWidth, tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
+				$("p.unstyled, p.tiny", ".test3").shorten({width: newWidth});
+				$("p.styled", ".test3").shorten({width: newWidth, tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
 			});
 		</script>
 

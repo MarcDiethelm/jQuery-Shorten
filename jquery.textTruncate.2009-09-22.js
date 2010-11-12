@@ -30,10 +30,10 @@
  * Usage Example ('selecting' a div with an id of "element"):
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-	<script type="text/javascript" src="jquery.textTruncate.js"></script>
+	<script type="text/javascript" src="jquery.shorten.js"></script>
 	<script type="text/javascript">
 		$(function() {
-			$("#element").textTruncate();
+			$("#element").shorten();
 		});
 	</script>
 
@@ -44,7 +44,7 @@
  *
  * 1) Passing a configuration hash as the plugin's argument, eg:
 
-	.textTruncate({
+	.shorten({
 		width: 300,
 		tail: ' <a href="#">more</a>',
 		tooltip: false
@@ -56,7 +56,7 @@
  *
  * 3) By changing the plugin defaults, eg:
 
-	$.fn.textTruncate.defaults.tail = ' <a href="#">more</a>';
+	$.fn.shorten.defaults.tail = ' <a href="#">more</a>';
 
  * Note: there is no default width (unless you create one).
  *
@@ -76,11 +76,11 @@
 
 	//var $c = console;
 
-	$.fn.textTruncate = function() {
+	$.fn.shorten = function() {
 
 		var userOptions = {},
 			args = arguments, // for better minification
-			func = args.callee // dito; and much shorter than $.fn.textTruncate
+			func = args.callee // dito; and much shorter than $.fn.shorten
 
 		if ( args.length ) {
 
@@ -218,15 +218,15 @@
 		var canvas = document.createElement("canvas"),
 			ctx = canvas.getContext("2d");
 
-		$.fn.textTruncate._supportsCanvas =  (ctx ? true : false);
+		$.fn.shorten._supportsCanvas =  (ctx ? true : false);
 		delete canvas;
 	}
 
-	$.fn.textTruncate._native = _native;
+	$.fn.shorten._native = _native;
 
 
 
-	$.fn.textTruncate.measureText_initCanvas = function initCanvas()
+	$.fn.shorten.measureText_initCanvas = function initCanvas()
 	{
 		var $this = $(this);
 		var canvas = document.createElement("canvas");
@@ -242,7 +242,7 @@
 	}
 
 	// measurement using canvas
-	$.fn.textTruncate.measureText_canvas = function measureText_canvas( text, ctx )
+	$.fn.shorten.measureText_canvas = function measureText_canvas( text, ctx )
 	{
 			//ctx.fillStyle = "red"; ctx.fillRect (0, 0, 500, 40);
 			//ctx.fillStyle = "black"; ctx.fillText(text, 0, 20);
@@ -250,7 +250,7 @@
 		return ctx.measureText(text).width; // crucial, fast but called too often
 	};
 
-	$.fn.textTruncate.measureText_initTable = function() {
+	$.fn.shorten.measureText_initTable = function() {
 		var css = "padding:0; margin:0; border:none; font:inherit;";
 		var $table = $('<table style="'+ css +'width:auto;zoom:1;position:absolute;"><tr style="'+ css +'"><td style="'+ css +'white-space:nowrap;"></td></tr></table>');
 		$td = $("td", $table);
@@ -261,7 +261,7 @@
 	};
 
 	// measurement using table
-	$.fn.textTruncate.measureText_table = function measureText_table( text, $td )
+	$.fn.shorten.measureText_table = function measureText_table( text, $td )
 	{
 		$td.text( text );
 
@@ -269,7 +269,7 @@
 	};
 
 
-	$.fn.textTruncate.defaults = {
+	$.fn.shorten.defaults = {
 		tail: "&hellip;",
 		tooltip: true
 	};

@@ -78,7 +78,7 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 
 		var userOptions = {},
 			args = arguments, // for better minification
-			func = args.callee // dito; and much shorter than $.fn.shorten
+			func = args.callee // dito; and shorter than $.fn.shorten
 
 		if ( args.length ) {
 

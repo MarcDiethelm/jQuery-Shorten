@@ -47,7 +47,10 @@
 		</div>
 
 		<p>
-			This is achieved using either of two methods: First the the text width of the 'selected' element (eg. span or div) is measured using Canvas or by placing it inside a temporary table cell. If it's too big to big to fit in the element's parent block it is shortened and measured again until it (and the appended ellipsis or text) fits inside the block. A tooltip on the 'selected' element displays the full original text.
+			This is achieved using either of two methods: First the the text width of the 'selected' element (eg. span or div) is
+			measured using Canvas or by placing it inside a temporary table cell. If it's too big to big to fit in the element's
+			parent block it is shortened (initially using an educated guess for efficiency) and measured again until it (and the
+			appended ellipsis or text) fits inside the block. A tooltip on the 'selected' element displays the full original text.
 		</p>
 		<p>
 			If the browser supports truncating text with CSS ('text-overflow:ellipsis') then that is used (but only if the text to append is the default ellipsis).

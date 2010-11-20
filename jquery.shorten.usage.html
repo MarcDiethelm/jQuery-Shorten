@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Shorten - A jQuery Plugin for Truncating Styled Text</title>
+		<style type="text/css" media="Screen">
+			.ruler { padding: 5px 0 5px 10px; border-bottom:1px dashed #000; background-color:#ffc; }
+
+			.demoText { width:500px; margin:5px 0; border: 1px dotted #000; }
+			.testText { width:500px; margin:47px 0 0; border: 1px dotted #000; }
+			.testText p, .demoText p { white-space:nowrap; margin:0; }
+			.testText .styled, .demoText .styled {font-family:impact;font-size:1.75em;font-style:italic;}
+			.testText .tiny, demoText .tiny {font-family:tahoma;font-size:0.70em;font-weight:bold;}
+
+			.testText p, demoText p { overflow:hidden; } /* Recommended: if not hiding the text before it's shortened. */
+			.testText p, demoText p { visibility: hidden; } /* Optional: hide the element before shortening its content. */
+
+			/* demo visual stuff */
+			body { font-family: sans-serif; font-size: small; max-width: 900px; }
+			.demo { margin: 20px 0; }
+			._100px { width: 99px; border-left: 1px dotted #888; float: right; clear: both;  background-color: #fafafa; color: #ccc; }
+			.caption { font-size: smaller; color: #888; }
+			body > code { white-space: pre-wrap; border: solid #999; border-width: 0 0 0 10px; display: block; background-color: #fafafa; margin-bottom: 20px; }
+			h2 { margin-top: 30px;}
+		</style>
+	</head>
+
+	<body>
+		<h1>jQuery Shorten Documentation and Demo</h1>
+
+		<p>
+			This jQuery plugin automatically shortens single-line text to fit in a block or pre-set width while you can configure how the text ends. The default is an ellipsis  ("…", &amp;hellip;, Unicode: 2026) but you can use anything you want, including markup.
+		</p>
+
+		<div class="demo">
+			<div class="demoText test1">
+				<div class="ruler"><code>.shorten()</code> (fit parent)</div>
+				<p class="unstyled">Zero configuration, unstyled &lt;p&gt; element shortened to fit the parent &lt;div&gt;'s width.</p>
+				<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
+				<p class="tiny"><!-- inner markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
+					(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
+			</div>
+			<span class="caption">
+			The parent has a dotted border and its width is set to 500px in CSS.
+			</span>
+		</div>
+
+		<p>
+			This is achieved using either of two methods: First the the text width of the 'selected' element (eg. span or div) is measured using Canvas or by placing it inside a temporary table cell. If it's too big to big to fit in the element's parent block it is shortened and measured again until it (and the appended ellipsis or text) fits inside the block. A tooltip on the 'selected' element displays the full original text.
+		</p>
+		<p>
+			If the browser supports truncating text with CSS ('text-overflow:ellipsis') then that is used (but only if the text to append is the default ellipsis).
+		</p>
+		<p>
+			If the text is truncated by the plugin any markup in the text will be stripped (eg: "&lt;a" starts stripping, "&lt; a" does not). This behaviour is dictated by the jQuery .text(val) method. The appended text may contain HTML however (a link or span for example).
+		</p>
+
+		<p>
+			Usage example ('selecting' a div with an id of "element"):
+		</p>
+		<code>
+	&lt;div style="width:500px;"&gt;
+		&lt;div,span,p... class="foo"&gt;text&lt/div,span,p...&gt;
+	&lt/div&gt;
+
+	&lt;script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js">&lt;/script&gt;
+	&lt;script type="text/javascript" src="jquery.shorten.js">&lt;/script&gt;
+	&lt;script type="text/javascript"&gt;
+		$(function() {
+			$(".foo").shorten();
+		});
+	&lt;/script&gt;
+		</code>
+
+		<p>
+			By default the plugin will use the parent block's width as the maximum width and an ellipsis as appended text when the text is truncated.
+		</p>
+
+		<h2>Options</h2>
+
+		<p>
+			There are three ways of configuring the plugin:
+		<p>
+			1) Passing a configuration hash as the plugin's argument, eg:
+		</p>
+		<code>
+	.shorten({
+		width: 400,
+		tail: ' &lt;a href="#"&gt;more&lt/a&gt;',
+		tooltip: false
+	});
+		</code>
+
+		<p>
+			2) Using two optional arguments (deprecated!):
+			width = the desired pixel width, integer
+			tail = text/html to append when truncating
+		</p>
+		<p>
+			3) By changing the plugin defaults, eg:
+		</p>
+		<code>
+	$.fn.shorten.defaults.tail = ' &lt;a href="#"&gt;more&lt;/a&gt;';
+		</code>
+
+		<div class="demoText test3" style="position: relative;">
+			<div class="ruler"><code>.shorten({width: 400}), .shorten({width: 400, tail: '&lt;a href=""&gt;...more&lt;/a&gt;'})</code></div>
+			<div class="unstyled _100px">&nbsp;</div>
+			<div class="styled _100px">&nbsp;400px</div>
+			<div class="tiny _100px">&nbsp;</div>
+			<p class="unstyled">This is a  &lt;p&gt; element that could be any length, but has to fit a given pixel width.</p>
+			<p class="styled">This is a bit of styled text that could be any length, but has to fit a given pixel width.</p>
+			<p class="tiny">Too short, no need to truncate.</p>
+		</div>
+		<span class="caption">
+		Truncating with options set.
+		</span>
+
+		<h2>Default settings</h2>
+
+		<code>
+	$.fn.shorten.defaults = {
+		tail: "&amp;hellip;",
+		tooltip: true
+	};
+		</code>
+
+		<h2>Notes</h2>
+
+		<p>
+			There is no default width (unless you create one).
+		</p>
+		<p>
+			You may want to set the element's CSS to {visibility:hidden;} so it won't initially flash at full width in slow browsers. The plugin unhides it when it's done.
+		</p>
+		<code>
+	.shortenText {
+		overflow:hidden; /* Recommended: if not hiding the text before it's shortened. */
+		visibility: hidden; /* Optional: hide the element before shortening its content. */
+	}
+		</code>
+		<p>
+			Only supports ltr text for now.
+		</p>
+		<p>
+			Tested with jQuery 1.3+
+		</p>
+		<p>
+			Based on a creation by M. David Green (www.mdavidgreen.com) in 2009.
+		</p>
+		<p>
+			Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
+		</p>
+		<p>
+			<strong>Get the latest version at <a href="https://github.com/MarcDiethelm/jQuery-Shorten">https://github.com/MarcDiethelm/jQuery-Shorten</a>.</strong>
+		</p>
+
+		<script type="text/javascript" src="jquery/jquery-1.4.2.js"></script>
+		<script type="text/javascript" src="jquery.shorten.js"></script>
+		<script type="text/javascript">
+
+			$(function() {
+				var newWidth = 500; // the maximum target width, in pixels
+
+				$("p.unstyled", ".test1").shorten(); // Zero configuration, default ellipsis
+				$("p.styled", ".test1").shorten({tail: '…&nbsp;&nbsp;<a href="#">more</a>'});
+				$("p.tiny", ".test1").shorten({tail: " &ndash; really long substitution text"});
+
+				newWidth = 400;
+				$("p.unstyled, p.tiny", ".test3").shorten({width: newWidth});
+				$("p.styled", ".test3").shorten({width: newWidth, tail: '…&nbsp;&nbsp;<a href="#">more</a>'});
+			});
+
+		</script>
+
+	</body>
+
+</html>

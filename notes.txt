@@ -8,10 +8,11 @@
  * - FIXED: Escaped HTML in the text causes problems: 1) text() bug; 2) width is wrong;
  *
  * NEED:
+ * - Width option must include unit (string). Currently assuming it's px.
  * - DONE: Test chainability
  * - DONE: Use CSS3 text-overflow:ellipsis if possible (IE7-, Safari and Konqueror. Opera needs -o-text-overflow.)
  * - handle overflow:visible if set and white-space:no-wrap if not set in CSS?
- * - need to check for values like &hellip; not just "..." in the user options, to use native CSS.
+ * - DONE: need to check for values like &hellip; not just "..." in the user options, to use native CSS.
  *
  * WANT:
  * - DONE: zero configuration: get width from parent (width and max-Width)
@@ -61,18 +62,20 @@
  * - FIXED: Escaped HTML in the text causes problems: 1) text() bug; 2) width is wrong;
  *
  * NEED:
+ * - Set width option with units, convert value to px (unit-less integer) Currently just 'assuming' px. (Bad!)
  * - DONE: Test chainability
  * - DONE: Use CSS3 text-overflow:ellipsis if possible (IE7-, Safari and Konqueror. Opera needs -o-text-overflow.)
  * - handle overflow:visible if set and white-space:no-wrap if not set in CSS?
- * - need to check for values like &hellip; not just "..." in the user options, to use native CSS.
+ * - DONE: need to check for values like &hellip; not just "..." in the user options, to use native CSS.
+ * - DONE: calling width() is expensive and really affects the table method. don't truncate from the top but rather make an educated and conservative guess, measure and check it, and if it's still too large loop from there. this should vastly improve performance with long(er) texts.
  *
  * WANT:
+ * - Move non-essentials to different git branch? Move minified too?
  * - DONE: zero configuration: get width from parent (width and max-Width)
  * - option marquee instead of truncate?
  * - add a test: does the text need to be truncated?
  * - save a value in .data(): "is_truncated"?
  * - handle dynamic/resized widths. store original text in .data()
- * - plugin name: jQuery Overflow, better?
  **/
 
 Crude performance test of the canvas and the table text measuring methods:

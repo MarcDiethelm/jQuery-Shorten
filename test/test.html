@@ -56,6 +56,10 @@
 			<p class="tiny">Too short, no need to truncate.</p>
 		</div>
 
+		<p>
+			Test: The second line has {tooltip: false}.
+		</p>
+
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
 		<script>!window.jQuery && document.write('<script type="text\/javascript" src="..\/jquery\/jquery-1.4.4.min.js"><\/script>')</script>
 		<script type="text/javascript" src="../jquery.shorten.js"></script>
@@ -72,7 +76,7 @@
 
 				newWidth = 400;
 				$("p.unstyled, p.tiny", ".test3").shorten({width: newWidth});
-				$("p.styled", ".test3").shorten({width: newWidth, tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
+				$("p.styled", ".test3").shorten({width: newWidth, tail: '&nbsp;&nbsp;<a href="#">...more</a>', tooltip: false});
 			});
 		</script>
 

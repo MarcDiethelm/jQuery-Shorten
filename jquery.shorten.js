@@ -106,27 +106,12 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 		return this.each(function () {
 
 			var $this = $(this);
-			$this.data("options-truncate", options);
-
-			/**
-			 * If browser implements text-overflow:ellipsis in CSS and tail is &hellip;/Unicode 8230/(…), use it!
-			 **/
-			if ( func._native ) {
-
-				var rendered_tail = $("<span>"+options.tail+"</span>").text(); // render tail to find out if it's the ellipsis character.
-
-				if ( rendered_tail.length == 1 && rendered_tail.charCodeAt(0) == 8230 ) {
-
-					this.style[func._native] = "ellipsis";
-					this.style.visibility = "visible";
-
-					return true;
-				}
-			}
+			$this.data("options-truncate", options),
+			text = $this.text();
 
 
 			var targetWidth = options.width || $this.parent().width(),
-				text = $this.text(),
+
 				numChars = text.length,
 				measureContext, // canvas context or table cell
 				measureText, // function that measures text width
@@ -152,6 +137,29 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 				$this.text( text );
 				this.style.visibility = "visible";
 				return true;
+			}
+
+			if ( options.tooltip ) {
+				this.setAttribute("title", text);
+			}
+
+			/**
+			 * If browser implements text-overflow:ellipsis in CSS and tail is &hellip;/Unicode 8230/(…), use it!
+			 * In this case we're doing the measurement above to determine if we need the tooltip.
+			 **/
+			if ( func._native ) {
+
+				var rendered_tail = $("<span>"+options.tail+"</span>").text(); // render tail to find out if it's the ellipsis character.
+
+				if ( rendered_tail.length == 1 && rendered_tail.charCodeAt(0) == 8230 ) {
+
+					$this.text( text );
+
+					this.style[func._native] = "ellipsis";
+					this.style.visibility = "visible";
+
+					return true;
+				}
 			}
 
 			tailWidth = measureText.call( this, tailText, measureContext ); // convert html to text and measure it

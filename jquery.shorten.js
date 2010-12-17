@@ -105,18 +105,17 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 		 **/
 		return this.each(function () {
 
-			var $this = $(this);
-			$this.data("options-truncate", options),
-			text = $this.text();
-
-
-			var targetWidth = options.width || $this.parent().width(),
-
+			var
+				$this = $(this),
+				text = $this.text(),
 				numChars = text.length,
+				targetWidth = options.width || $this.parent().width(),
 				measureContext, // canvas context or table cell
 				measureText, // function that measures text width
 				tailText = $("<span/>").html(options.tail).text(), // convert html to text
 				tailWidth;
+
+			$this.data("options-truncate", options);
 
 
 			// decide on a method for measuring text width

@@ -57,6 +57,13 @@ There is no default width (unless you create one).
 You may want to set the element's CSS to {visibility:hidden;} so it won't
 initially flash at full width in slow browsers.
 
+jQuery < 1.4.4: Shorten doesn't work for elements who's parents have display:none, because .width() is broken. (Returns negative values)
+http://bugs.jquery.com/ticket/7225
+Workarounds:
+- Use jQuery 1.4.4+
+- Supply a target width in options.
+- Use better timing: Don't use display:none when shortening (maybe you can use visibility:hidden). Or shorten after changing display.
+
 Only supports ltr text for now.
 
 Tested with jQuery 1.3+
@@ -114,6 +121,11 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 				measureText, // function that measures text width
 				tailText = $("<span/>").html(options.tail).text(), // convert html to text
 				tailWidth;
+
+			if (targetWidth < 0) { // jQuery versions < 1.4.4 return negative values for .width() if display:none is used.
+				//$c.log("nonsense target width ", targetWidth);
+				return true;
+			}
 
 			$this.data("options-truncate", options);
 

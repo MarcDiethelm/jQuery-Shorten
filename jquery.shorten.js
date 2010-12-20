@@ -145,6 +145,7 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 			var origLength = measureText.call( this, text, measureContext );
 
 			if ( origLength < targetWidth ) {
+				//$c.log("nothing to do");
 				$this.text( text );
 				this.style.visibility = "visible";
 				return true;
@@ -159,7 +160,7 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 			 * In this case we're doing the measurement above to determine if we need the tooltip.
 			 **/
 			if ( func._native ) {
-
+				//$c.log("css ellipsis");
 				var rendered_tail = $("<span>"+options.tail+"</span>").text(); // render tail to find out if it's the ellipsis character.
 
 				if ( rendered_tail.length == 1 && rendered_tail.charCodeAt(0) == 8230 ) {
@@ -207,7 +208,6 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 				numChars--;
 				text = text.substring(0, numChars);
 					//count++;
-
 			} while ( measureText.call( this, text, measureContext ) >= targetWidth );
 
 			$this.html( $.trim( $("<span/>").text(text).html() ) + options.tail );
@@ -253,7 +253,8 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 
 		/* the rounding is experimental. it fixes a problem with a font size specified as 0.7em which resulted in a computed size of 11.2px.
 		  without rounding the measured font was too small. even with rounding the result differs slightly from the table method's results. */
-		ctx.font = Math.ceil(parseFloat($this.css("font-size"))) +"px "+ $this.css("font-family") +" "+ $this.css("font-weight") +" "+ $this.css("font-style");
+		// Get the current text style. This string uses the same syntax as the CSS font specifier. The order matters!
+		ctx.font = $this.css("font-style") +" "+ $this.css("font-variant") +" "+ $this.css("font-weight") +" "+ Math.ceil(parseFloat($this.css("font-size"))) +"px "+ $this.css("font-family");
 
 		return ctx;
 	}
@@ -262,7 +263,7 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 	$.fn.shorten.measureText_canvas = function measureText_canvas( text, ctx )
 	{
 			//ctx.fillStyle = "red"; ctx.fillRect (0, 0, 500, 40);
-			//ctx.fillStyle = "black"; ctx.fillText(text, 0, 20);
+			//ctx.fillStyle = "black"; ctx.fillText(text, 0, 12);
 
 		return ctx.measureText(text).width; // crucial, fast but called too often
 	};

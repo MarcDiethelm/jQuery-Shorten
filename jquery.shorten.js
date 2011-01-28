@@ -85,14 +85,19 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 
 		var userOptions = {},
 			args = arguments, // for better minification
-			func = args.callee // dito; and shorter than $.fn.shorten
+			func = args.callee, // dito; and shorter than $.fn.shorten
+			info_identifier = "shorten-info",
+			info = {
+				shortened: false,
+				textOverflow: false
+			}
 
 		if ( args.length ) {
 
 			if ( args[0].constructor == Object ) {
 				userOptions = args[0];
 			} else if ( args[0] == "options" ) {
-				return $(this).eq(0).data("options-truncate");
+				return $(this).eq(0).data("shorten-options");
 			} else {
 				userOptions = {
 					width: parseInt(args[0]),
@@ -116,19 +121,29 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 				$this = $(this),
 				text = $this.text(),
 				numChars = text.length,
-				targetWidth = options.width || $this.parent().width(),
+				targetWidth,
 				measureContext, // canvas context or table cell
 				measureText, // function that measures text width
 				tailText = $("<span/>").html(options.tail).text(), // convert html to text
 				tailWidth;
+
+			if ($this.css("float") != "none") {
+				targetWidth = options.width || $this.width(); // this let's correctly shorten text in floats, but fucks up the rest
+			} else {
+				targetWidth = options.width || $this.parent().width();
+			}
 
 			if (targetWidth < 0) { // jQuery versions < 1.4.4 return negative values for .width() if display:none is used.
 				//$c.log("nonsense target width ", targetWidth);
 				return true;
 			}
 
-			$this.data("options-truncate", options);
+			$this.data("shorten-options", options);
 
+			// for consistency with the text-overflow method (which requires these properties), but not actually neccessary.
+			this.style.display = "block";
+			//this.style.overflow = "hidden"; // firefox: a floated li will cause the ul to have a "bottom padding" if this is set.
+			this.style.whiteSpace = "nowrap";
 
 			// decide on a method for measuring text width
 			if ( func._supportsCanvas ) {
@@ -148,6 +163,9 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 				//$c.log("nothing to do");
 				$this.text( text );
 				this.style.visibility = "visible";
+
+				$this.data(info_identifier, info);
+
 				return true;
 			}
 
@@ -167,8 +185,18 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 
 					$this.text( text );
 
+					// the following three properties are needed for text-overflow to work (tested in Chrome).
+					// for consistency now I need to set this everywhere... which probably interferes with users' layout...
+					//this.style.whiteSpace = "nowrap";
+					this.style.overflow = "hidden";
+					//this.style.display = "block";
+
 					this.style[func._native] = "ellipsis";
 					this.style.visibility = "visible";
+
+					info.shortened = true;
+					info.textOverflow = "ellipsis";
+					$this.data(info_identifier, info);
 
 					return true;
 				}
@@ -180,9 +208,11 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 				//$c.log(text +" + "+ tailText);
 
 			/**
-			 * Before we start removing character one by one, let's try to be more intelligent about this:
-			 * If the original string is longer than targetWidth by at least xy percent, then shorten it by yz percent (and re-measure for safety),
-			 * if we're still too long use it, else skip this step. This saves a lot of time for long strings.
+			 * Before we start removing characters one by one, let's try to be more intelligent about this:
+			 * If the original string is longer than targetWidth by at least 15% (for safety), then shorten it
+			 * to targetWidth + 15% (and re-measure for safety). If the resulting text still is too long (as expected),
+			 * use that for further shortening. Else use the original text. This saves a lot of time for text that is
+			 * much longer than the desired width.
 			 */
 			var safeGuess = targetWidth * 1.15; // add 15% to targetWidth for safety before making the cut.
 
@@ -202,8 +232,8 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 				}
 			}
 
+			// Remove characters one by one until text width <= targetWidth
 				//var count = 0;
-			// this simply removes characters one by one until the text is shorter than targetWidth
 			do {
 				numChars--;
 				text = text.substring(0, numChars);
@@ -214,6 +244,10 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 			this.style.visibility = "visible";
 				//$c.info(count + " normal truncating cycles...")
 				//$c.log("----------------------------------------------------------------------");
+
+			info.shortened = true;
+			$this.data(info_identifier, info);
+
 			return true;
 		});
 

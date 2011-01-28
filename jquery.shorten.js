@@ -2,7 +2,7 @@
 
 /*
  * Shorten, a jQuery plugin to automatically shorten text to fit in a block or a pre-set width and configure how the text ends.
- * Copyright (C) 2009-2010  Marc Diethelm
+ * Copyright (C) 2009-2011  Marc Diethelm
  * License: (GPL 3, http://www.gnu.org/licenses/gpl-3.0.txt) see license.txt
  */
 
@@ -12,7 +12,7 @@ This jQuery plugin automatically shortens text to fit in a block or pre-set widt
 
 This is achieved using either of two methods: First the the text width of the 'selected' element (eg. span or div) is measured using Canvas or by placing it inside a temporary table cell. If it's too big to big to fit in the element's parent block it is shortened and measured again until it (and the appended ellipsis or text) fits inside the block. A tooltip on the 'selected' element displays the full original text.
 
-If the browser supports truncating text with CSS ('text-overflow:ellipsis') then that is used (but only if the text to append is the default ellipsis).
+If the browser supports truncating text with CSS ('text-overflow:ellipsis') then that is used (but only if the text to append is the default ellipsis). http://www.w3.org/TR/2003/CR-css3-text-20030514/#text-overflow-props
 
 If the text is truncated by the plugin any markup in the text will be stripped (eg: "<a" starts stripping, "< a" does not). This behaviour is dictated by the jQuery .text(val) method. The appended text may contain HTML however (a link or span for example).
 
@@ -177,7 +177,7 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 			 * If browser implements text-overflow:ellipsis in CSS and tail is &hellip;/Unicode 8230/(…), use it!
 			 * In this case we're doing the measurement above to determine if we need the tooltip.
 			 **/
-			if ( func._native ) {
+			if ( func._native && !userOptions.width ) {
 				//$c.log("css ellipsis");
 				var rendered_tail = $("<span>"+options.tail+"</span>").text(); // render tail to find out if it's the ellipsis character.
 
@@ -264,14 +264,14 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 		_native = "textOverflow";
 	} else if ( "OTextOverflow" in css ) {
 		_native = "OTextOverflow";
-	} else {
-		// test for canvas support
-		var canvas = document.createElement("canvas"),
-			ctx = canvas.getContext("2d");
-
-		$.fn.shorten._supportsCanvas =  (ctx ? true : false);
-		delete canvas;
 	}
+
+		// test for canvas support
+	var canvas = document.createElement("canvas"),
+		ctx = canvas.getContext("2d");
+
+	$.fn.shorten._supportsCanvas =  (ctx ? true : false);
+	delete canvas;
 
 	$.fn.shorten._native = _native;
 

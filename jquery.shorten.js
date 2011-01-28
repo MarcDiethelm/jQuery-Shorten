@@ -80,24 +80,26 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 (function ($) {
 
 	//var $c = console;
+	var
+		_native = false,
+		is_canvasTextSupported,
+		measureContext, // canvas context or table cell
+		measureText, // function that measures text width
+		info_identifier = "shorten-info",
+		options_identifier = "shorten-options";
 
 	$.fn.shorten = function() {
 
 		var userOptions = {},
 			args = arguments, // for better minification
-			func = args.callee, // dito; and shorter than $.fn.shorten
-			info_identifier = "shorten-info",
-			info = {
-				shortened: false,
-				textOverflow: false
-			}
+			func = args.callee // dito; and shorter than $.fn.shorten
 
 		if ( args.length ) {
 
 			if ( args[0].constructor == Object ) {
 				userOptions = args[0];
 			} else if ( args[0] == "options" ) {
-				return $(this).eq(0).data("shorten-options");
+				return $(this).eq(0).data(options_identifier);
 			} else {
 				userOptions = {
 					width: parseInt(args[0]),
@@ -122,10 +124,12 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 				text = $this.text(),
 				numChars = text.length,
 				targetWidth,
-				measureContext, // canvas context or table cell
-				measureText, // function that measures text width
 				tailText = $("<span/>").html(options.tail).text(), // convert html to text
-				tailWidth;
+				tailWidth,
+				info = {
+					shortened: false,
+					textOverflow: false
+				}
 
 			if ($this.css("float") != "none") {
 				targetWidth = options.width || $this.width(); // this let's correctly shorten text in floats, but fucks up the rest
@@ -138,7 +142,7 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 				return true;
 			}
 
-			$this.data("shorten-options", options);
+			$this.data(options_identifier, options);
 
 			// for consistency with the text-overflow method (which requires these properties), but not actually neccessary.
 			this.style.display = "block";
@@ -146,15 +150,15 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 			this.style.whiteSpace = "nowrap";
 
 			// decide on a method for measuring text width
-			if ( func._supportsCanvas ) {
+			if ( is_canvasTextSupported ) {
 				//$c.log("canvas");
-				measureContext = func.measureText_initCanvas.call( this );
-				measureText = func.measureText_canvas;
+				measureContext = measureText_initCanvas.call( this );
+				measureText = measureText_canvas;
 
 			} else {
 				//$c.log("table")
-				measureContext = func.measureText_initTable.call( this );
-				measureText = func.measureText_table;
+				measureContext = measureText_initTable.call( this );
+				measureText = measureText_table;
 			}
 
 			var origLength = measureText.call( this, text, measureContext );
@@ -258,7 +262,6 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 
 
 	var css = document.documentElement.style;
-	var _native = false;
 
 	if ( "textOverflow" in css ) {
 		_native = "textOverflow";
@@ -267,17 +270,22 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 	}
 
 		// test for canvas support
-	var canvas = document.createElement("canvas"),
-		ctx = canvas.getContext("2d");
 
-	$.fn.shorten._supportsCanvas =  (ctx ? true : false);
-	delete canvas;
+	if ( typeof Modernizr != 'undefined' && Modernizr.canvastext ) { // if Modernizr has tested for this already use that.
+		is_canvasTextSupported = Modernizr.canvastext;
+	} else {
+		var ctx = document.createElement("canvas").getContext("2d");
 
+		is_canvasTextSupported =  (ctx && ctx.fillText ? true : false);
+
+		delete canvas;
+	}
+	$.fn.shorten._is_canvasTextSupported = is_canvasTextSupported;
 	$.fn.shorten._native = _native;
 
 
 
-	$.fn.shorten.measureText_initCanvas = function initCanvas()
+	function measureText_initCanvas()
 	{
 		var $this = $(this);
 		var canvas = document.createElement("canvas");
@@ -294,7 +302,7 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 	}
 
 	// measurement using canvas
-	$.fn.shorten.measureText_canvas = function measureText_canvas( text, ctx )
+	function measureText_canvas( text, ctx )
 	{
 			//ctx.fillStyle = "red"; ctx.fillRect (0, 0, 500, 40);
 			//ctx.fillStyle = "black"; ctx.fillText(text, 0, 12);
@@ -302,7 +310,8 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 		return ctx.measureText(text).width; // crucial, fast but called too often
 	};
 
-	$.fn.shorten.measureText_initTable = function() {
+	function measureText_initTable()
+	{
 		var css = "padding:0; margin:0; border:none; font:inherit;";
 		var $table = $('<table style="'+ css +'width:auto;zoom:1;position:absolute;"><tr style="'+ css +'"><td style="'+ css +'white-space:nowrap;"></td></tr></table>');
 		$td = $("td", $table);
@@ -313,7 +322,7 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 	};
 
 	// measurement using table
-	$.fn.shorten.measureText_table = function measureText_table( text, $td )
+	function measureText_table( text, $td )
 	{
 		$td.text( text );
 

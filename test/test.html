@@ -1,85 +1,275 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
-
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Shorten - A jQuery Plugin for Truncating Styled Text</title>
-		<style type="text/css" media="Screen">
-			body { font-family: sans-serif;}
-			.ruler { padding: 5px 0; border-bottom:1px dashed #000; background-color:#ffc; }
+	<style>
+		body > div,
+		body > ul {
+			outline: 1px dotted #000;
+			padding: 3px;
+		}
+		body > div,
+		body > ul.vertical {
+			width: 300px;
+		}
+		div a {
+			outline: 1px dotted #000;
+		}
+		.shorten {
+			font-family: serif;
+			font-weight: bold;
+		}
 
-			.testText { width:500px; margin:47px 0 0; border: 1px dotted #000; }
-			.testText p { white-space:nowrap; margin:0; }
-			.testText .styled {font-family:impact;font-size:1.75em;font-style:italic;}
-			.testText .tiny {font-family:tahoma;font-size:0.70em;font-weight:bold;}
+		.nowrap {
+			white-space: nowrap;
+		}
+		.overflow-hidden {
+			overflow: hidden;
+		}
+		.float-left {
+			float: left;
+		}
+		.inline-block {
+			display: inline-block;
+		}
+		.split-third {
+			width: 33.3%;
+		}
+		.split-half {
+			width: 50%;
+		}
+		.margin-r-15 {
+			margin-right: 15px;
+		}
+		.padding-15 {
+			padding: 15px;
+		}
+		.long-ellipsis {
+			font-size: x-small;
+		}
 
-			.testText p { overflow:hidden; } /* Recommended: if not hiding the text before it's shortened. */
-			.testText p { visibility: hidden; } /* Optional: hide the element before shortening its content. */
 
-			/* demo visual stuff */
-			._100px { width: 99px; border-left: 1px dotted #888; float: right; clear: both;  background-color: #fafafa; color: #ccc; }
-		</style>
+		div div {
+			outline: 1px dotted #000;
+		}
+
+		.nav {
+			margin: 0;
+		}
+		.nav li {
+			list-style: none;
+			outline: 1px dotted #000;
+			margin: 0;
+			padding: 0;
+		}
+		.nav li a {
+			/*padding: 0 15px;*/ /* FIXME: this breaks floats in Firefox, but is a common use case */
+		}
+		.clearfix {
+			overflow: auto;
+			/*width: 100%; IE ?*/
+		}
+		body {
+			font-family: sans-serif;
+			font-size: small;
+			color: #666;
+		}
+		body * {
+			font-family: serif;
+			font-size: medium;
+			color: #000;
+		}
+		.pink {
+			background-color: pink;
+		}
+		.cyan {
+			background-color: cyan;
+		}
+		a {
+			color: #3300ff;
+		}
+	</style>
 	</head>
 
 	<body>
-		<h1>jQuery Shorten Tests</h1>
-		<p>
-		The parent has a dotted border and its width is set to 500px in CSS.
-		</p>
-
-		<div class="testText test1">
-			<div class="ruler">each line truncated individually, fit parent</div>
-			<p class="unstyled">Zeroconf unstyled &lt;p&gt; element shortened to fit the parent width.</p>
-			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
-			<p class="tiny"><!-- inner markup will be stripped --><span style="color:pink;">This is a bit of tiny text that could be any length, but has to fit the parent width.
-				(For example, this is a really long bit of text that has to fit on a single line.)</span></p>
-		</div>
-
-		<div class="testText test2">
-			<div class="ruler">selector matches multiple, fit parent</div>
-			<p class="unstyled">This is a &lt;p&gt; that could be any length, but has to fit the parent width.</p>
-			<p class="styled">This is a bit of styled text that could be any length, but has to fit the parent width.</p>
-			<p class="tiny">This &lt;p&gt; is short, no need to truncate.</p>
-		</div>
-
-		<p>
-			Test: If the elements above are grey, chainability is preserved.
-		</p>
-
-		<div class="testText test3" style="position: relative;">
-			<div class="ruler">mixed selectors, fit 400px</div>
-			<div class="unstyled _100px">&nbsp;</div>
-			<div class="styled _100px">&nbsp;400px</div>
-			<div class="tiny _100px">&nbsp;</div>
-			<p class="unstyled">This is a  &lt;p&gt; element that could be any length, but has to fit a given pixel width.</p>
-			<p class="styled">This is a bit of styled text that could be any length, but has to fit a given pixel width.</p>
-			<p class="tiny">Too short, no need to truncate.</p>
-		</div>
-
-		<p>
-			Test: The second line has {tooltip: false}.
-		</p>
-
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-		<script>!window.jQuery && document.write('<script type="text\/javascript" src="..\/jquery\/jquery-1.4.4.min.js"><\/script>')</script>
+		<!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>-->
+		<script type="text/javascript" src="../jquery/jquery-1.4.4.min.js"></script>
 		<script type="text/javascript" src="../jquery.shorten.js"></script>
-		<script type="text/javascript">
 
-
+		<script>
 			$(function() {
-				var newWidth = 500; // the maximum target width, in pixels
-				$("p.unstyled", ".test1").shorten(); // Zero configuration, default ellipsis
-				$("p.styled", ".test1").shorten({tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
-				$("p.tiny", ".test1").shorten({tail: " &ndash; really long substitution text"});
+				$('.shorten.html-tail').shorten({tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
+				$('.shorten.long-ellipsis').shorten({tail: '&hellip;&nbsp;&nbsp;Pretty long ellipsis'});
+				$('.shorten.width-200:not(.no-tooltip)').shorten({width: 200});
+				$('.shorten.width-200.no-tooltip').shorten({width: 200, tooltip: false});
+				$('.shorten.zeroconf').shorten();
 
-				$("p", ".test2").shorten(newWidth).css("background-color", "#eeeeee"); // added css method to test chainability
+				$('.shorten').each(function() {
+					var info = $(this).data('shorten-info');
 
-				newWidth = 400;
-				$("p.unstyled, p.tiny", ".test3").shorten({width: newWidth});
-				$("p.styled", ".test3").shorten({width: newWidth, tail: '&nbsp;&nbsp;<a href="#">...more</a>', tooltip: false});
+					if ( info && info.shortened ) {
+						if ( info.textOverflow ) {
+							$(this).addClass("pink");
+						} else {
+							$(this).addClass("cyan");
+						}
+					}
+				});
 			});
 		</script>
 
-	</body>
+		<h1>
+			jQuery Shorten tests
+		</h1>
+		<p>
+			The W3C CSS spec for the text-overflow property requires the element to be a block.<br>
+			Elements shortened through the DOM are marked in  <span class="cyan">cyan</span>.<br>
+			Elements using CSS text-overflow are marked in <span class="pink">pink</span>.
+		</p>
+		<br>
 
+		<h2>Tests with user options</h2>
+
+		span in a div, HTML tail
+		<div>
+			<span class="shorten html-tail">&lt;span&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</span>
+		</div>
+		<br>
+
+		div in a div, HTML ellipsis
+		<div>
+			<div class="shorten html-tail">&lt;div&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</div>
+		</div>
+		<br>
+
+		span in a div, 200px width
+		<div>
+			<span class="shorten width-200">&lt;span&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</span>
+		</div>
+		<br>
+
+		div in a div, 200px width, no tooltip
+		<div>
+			<div class="shorten width-200 no-tooltip">&lt;div&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</div>
+		</div>
+		<br>
+
+		div in a div, long ellipsis, small text
+		<div>
+			<div class="shorten long-ellipsis">&lt;div&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</div>
+		</div>
+		<br>
+
+		<h2>
+			Zero configuration tests
+		</h2>
+
+		anchor in a div
+		<div>
+			<a href="" class="shorten zeroconf">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a>
+		</div>
+		<br>
+
+		div in a div
+		<div>
+			<div class="shorten zeroconf">&lt;div&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</div>
+		</div>
+		<br>
+
+		two divs in a div, float left, 33% width, 15px margin on the right
+		<div class="clearfix">
+			<div class="shorten zeroconf float-left split-third margin-r-15">&lt;div&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</div>
+			<div class="shorten zeroconf float-left split-third margin-r-15">&lt;div&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</div>
+		</div>
+		<br>
+
+		two divs in a div, float left, 50% width
+		<div class="clearfix">
+			<div class="shorten zeroconf float-left split-half">&lt;div&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</div>
+			<div class="shorten zeroconf float-left split-half">&lt;div&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</div>
+		</div>
+		<br>
+
+		vertical ul navigation, block
+		<ul class="nav vertical clearfix">
+			<li><a href="" class="shorten zeroconf">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a></li>
+			<li><a href="" class="shorten zeroconf">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a></li>
+			<li><a href="" class="shorten zeroconf">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a></li>
+		</ul>
+		<br>
+
+		vertical ul navigation, block, 15px padding
+		<ul class="nav vertical clearfix">
+			<li><a href="" class="shorten zeroconf padding-15">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a></li>
+			<li><a href="" class="shorten zeroconf padding-15">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a></li>
+			<li><a href="" class="shorten zeroconf padding-15">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a></li>
+		</ul>
+		<br>
+
+		horizontal ul navigation, inline-block, 33% width
+		<ul class="nav horizontal clearfix">
+			<li class="inline-block split-third"><a href="" class="shorten zeroconf">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a>
+			</li><li class="inline-block split-third"><a href="" class="shorten zeroconf">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a>
+			</li><li class="inline-block split-third"><a href="" class="shorten zeroconf">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a></li>
+		</ul>
+		<br>
+
+		horizontal ul navigation, float left, 33% width
+		<ul class="nav horizontal clearfix">
+			<li class="float-left split-third"><a href="" class="shorten zeroconf">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a></li>
+			<li class="float-left split-third"><a href="" class="shorten zeroconf">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a></li>
+			<li class="float-left split-third"><a href="" class="shorten zeroconf">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a></li>
+		</ul>
+		<br>
+
+		horizontal ul navigation, float left, inline-block (typical IE "hack" to have both properties), 33% width
+		<ul class="nav horizontal clearfix">
+			<li class="float-left inline-block split-third"><a href="" class="shorten zeroconf">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a></li>
+			<li class="float-left inline-block split-third"><a href="" class="shorten zeroconf">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a></li>
+			<li class="float-left inline-block split-third"><a href="" class="shorten zeroconf">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a></li>
+		</ul>
+		<br>
+
+		anchor in a div, nowrap
+		<div>
+			<a href="" class="shorten zeroconf nowrap">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a>
+		</div>
+		<br>
+
+		div in a div, nowrap
+		<div>
+			<div class="shorten zeroconf nowrap">&lt;div&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</div>
+		</div>
+		<br>
+
+		anchor in a div, overflow hidden
+		<div>
+			<a href="" class="shorten zeroconf overflow-hidden">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a>
+		</div>
+		<br>
+
+		div in a div, overflow hidden
+		<div>
+			<div class="shorten zeroconf overflow-hidden">&lt;div&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</div>
+		</div>
+		<br>
+
+		anchor in a div, nowrap, overflow hidden
+		<div>
+			<a href="" class="shorten zeroconf nowrap overflow-hidden">&lt;a&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</a>
+		</div>
+		<br>
+
+		div in a div, nowrap, overflow hidden
+		<div>
+			<div class="shorten zeroconf nowrap overflow-hidden">&lt;div&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in neque tempor est tempor tincidunt.</div>
+		</div>
+		<br>
+
+		span in a div, short text, truncating should be unnecessary
+		<div>
+			<div class="shorten zeroconf">&lt;span&gt; D'oh!</div>
+		</div>
+		<br>
+
+	</body>
 </html>

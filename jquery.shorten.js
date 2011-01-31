@@ -274,11 +274,8 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 	if ( typeof Modernizr != 'undefined' && Modernizr.canvastext ) { // if Modernizr has tested for this already use that.
 		is_canvasTextSupported = Modernizr.canvastext;
 	} else {
-		var ctx = document.createElement("canvas").getContext("2d");
-
-		is_canvasTextSupported =  (ctx && ctx.fillText ? true : false);
-
-		delete canvas;
+    var canvas = document.createElement("canvas");
+    is_canvasTextSupported = !!(canvas.getContext && canvas.getContext("2d") && (typeof canvas.getContext("2d").fillText === 'function'));
 	}
 	$.fn.shorten._is_canvasTextSupported = is_canvasTextSupported;
 	$.fn.shorten._native = _native;

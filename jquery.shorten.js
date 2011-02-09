@@ -224,7 +224,7 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 		var canvas = document.createElement("canvas"),
 			ctx = canvas.getContext("2d");
 
-		$.fn.shorten._supportsCanvas =  (ctx ? true : false);
+		$.fn.shorten._supportsCanvas =  (ctx && (typeof ctx.measureText != 'undefined') ? true : false);
 		delete canvas;
 	}
 

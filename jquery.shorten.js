@@ -168,6 +168,11 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 				$this.text( text );
 				this.style.visibility = "visible";
 
+				// if this is a re-run on this element (and tooltip is enabled), remove obsolete tooltip
+				if ($this.data(info_identifier) && options.tooltip) {
+					$this.removeAttr("title");
+				}
+
 				$this.data(info_identifier, info);
 
 				return true;

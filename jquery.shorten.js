@@ -83,7 +83,7 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 	var
 		_native = false,
 		is_canvasTextSupported,
-		measureContext, // canvas context or table cell
+		measureContextInit, // canvas context or table cell
 		measureText, // function that measures text width
 		info_identifier = "shorten-info",
 		options_identifier = "shorten-options";
@@ -92,7 +92,8 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 
 		var userOptions = {},
 			args = arguments, // for better minification
-			func = args.callee // dito; and shorter than $.fn.shorten
+			func = args.callee, // dito; and shorter than $.fn.shorten
+			options;
 
 		if ( args.length ) {
 
@@ -108,10 +109,10 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 			}
 		}
 
-		this.css("visibility","hidden"); // Hide the element(s) while manipulating them
+		this.css("visibility", "hidden"); // Hide the element(s) while manipulating them
 
 		// apply options vs. defaults
-		var options = $.extend({}, func.defaults, userOptions);
+		options = $.extend({}, func.defaults, userOptions);
 
 
 		/**
@@ -123,9 +124,10 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 				$this = $(this),
 				text = $this.text(),
 				numChars = text.length,
+				measureContext = measureContextInit.call( this ),
+				origLength = measureText.call( this, text, measureContext ),
 				targetWidth,
 				tailText = $("<span/>").html(options.tail).text(), // convert html to text
-				tailWidth,
 				info = {
 					shortened: false,
 					textOverflow: false
@@ -148,20 +150,6 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 			this.style.display = "block";
 			//this.style.overflow = "hidden"; // firefox: a floated li will cause the ul to have a "bottom padding" if this is set.
 			this.style.whiteSpace = "nowrap";
-
-			// decide on a method for measuring text width
-			if ( is_canvasTextSupported ) {
-				//$c.log("canvas");
-				measureContext = measureText_initCanvas.call( this );
-				measureText = measureText_canvas;
-
-			} else {
-				//$c.log("table")
-				measureContext = measureText_initTable.call( this );
-				measureText = measureText_table;
-			}
-
-			var origLength = measureText.call( this, text, measureContext );
 
 			if ( origLength < targetWidth ) {
 				//$c.log("nothing to do");
@@ -211,7 +199,7 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 				}
 			}
 
-			tailWidth = measureText.call( this, tailText, measureContext ); // convert html to text and measure it
+			var tailWidth = measureText.call( this, tailText, measureContext ); // convert html to text and measure it
 			targetWidth = targetWidth - tailWidth;
 
 				//$c.log(text +" + "+ tailText);
@@ -261,7 +249,6 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 		});
 
 		return true;
-
 	};
 
 
@@ -285,6 +272,17 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 	
 	$.fn.shorten._is_canvasTextSupported = is_canvasTextSupported;
 	$.fn.shorten._native = _native;
+
+	// decide on a method for measuring text width
+	if ( is_canvasTextSupported ) {
+		//$c.log("canvas");
+		measureContextInit = measureText_initCanvas;
+		measureText = measureText_canvas;
+	} else {
+		//$c.log("table")
+		measureContextInit = measureText_initTable;
+		measureText = measureText_table;
+	}
 
 
 

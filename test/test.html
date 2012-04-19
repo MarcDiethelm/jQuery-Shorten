@@ -97,23 +97,26 @@
 
 		<script>
 			$(function() {
-				$('.shorten.html-tail').shorten({tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
-				$('.shorten.long-ellipsis').shorten({tail: '&hellip;&nbsp;&nbsp;Pretty long ellipsis'});
-				$('.shorten.width-200:not(.no-tooltip)').shorten({width: 200});
-				$('.shorten.width-200.no-tooltip').shorten({width: 200, tooltip: false});
-				$('.shorten.zeroconf').shorten();
+				window.go = function go() {
+					$('.shorten.html-tail').shorten({tail: '&nbsp;&nbsp;<a href="#">...more</a>'});
+					$('.shorten.long-ellipsis').shorten({tail: '&hellip;&nbsp;&nbsp;Pretty long ellipsis'});
+					$('.shorten.width-200:not(.no-tooltip)').shorten({width: 200});
+					$('.shorten.width-200.no-tooltip').shorten({width: 200, tooltip: false});
+					$('.shorten.zeroconf').shorten();
 
-				$('.shorten').each(function() {
-					var info = $(this).data('shorten-info');
+					$('.shorten').each(function() {
+						var info = $(this).data('shorten-info');
 
-					if ( info && info.shortened ) {
-						if ( info.textOverflow ) {
-							$(this).addClass("pink");
-						} else {
-							$(this).addClass("cyan");
+						if ( info && info.shortened ) {
+							if ( info.textOverflow ) {
+								$(this).addClass("pink");
+							} else {
+								$(this).addClass("cyan");
+							}
 						}
-					}
-				});
+					});
+				}
+				go();
 			});
 		</script>
 

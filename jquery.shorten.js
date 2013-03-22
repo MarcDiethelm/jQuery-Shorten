@@ -102,7 +102,7 @@ Heavily modified/simplified/improved by Marc Diethelm (http://web5.me/).
 				return $(this).eq(0).data(options_identifier);
 			} else {
 				userOptions = {
-					width: parseInt(args[0]),
+					width: parseInt(args[0],10),
 					tail: args[1]
 				}
 			}

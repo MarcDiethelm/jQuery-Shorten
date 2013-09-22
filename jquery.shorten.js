@@ -32,7 +32,7 @@
 				return $(this).eq(0).data(options_identifier);
 			} else {
 				userOptions = {
-					width: parseInt(args[0]),
+					width: parseInt(args[0],10),
 					tail: args[1]
 				}
 			}

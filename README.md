@@ -4,7 +4,7 @@
 
 This jQuery plugin automatically shortens single-line text to fit in a block or pre-set width while you can configure how the text ends. The default is an ellipsis  ("…", &amp;hellip;, Unicode: 2026) but you can use anything you want, including markup.
 
-This is achieved using either of two methods: First the the text width of the 'selected' element (eg. span or div) is measured using Canvas or by placing it inside a temporary table cell. If it's too big to big to fit in the element's parent block it is shortened and measured again until it (and the appended ellipsis or text) fits inside the block. A tooltip on the 'selected' element displays the full original text.
+This is achieved using either of two methods: First the text width of the 'selected' element (eg. span or div) is measured using Canvas or by placing it inside a temporary table cell. If it's too big to fit in the element's parent block it is shortened and measured again until it (and the appended ellipsis or text) fits inside the block. A tooltip on the 'selected' element displays the full original text.
 
 If the browser supports truncating text with CSS `text-overflow: ellipsis` then that is used (but only if the text to append is the default ellipsis). [W3C Spec](http://www.w3.org/TR/2003/CR-css3-text-20030514/#text-overflow-props)
 
